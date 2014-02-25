@@ -10,8 +10,11 @@
 #import "FLUser.h"
 #import "FLActivityType.h"
 
-#define PF_APP_ID @"9ILuGQbYRPPCjss1Y1yPnto5MLjxz1iYshSc5Fz8"
-#define PF_CLIENT_KEY @"seD1rhtS5UjYI6hsJWLORZ6aDhlyaDNnHoGivEXL"
+//#define PF_APP_ID @"9ILuGQbYRPPCjss1Y1yPnto5MLjxz1iYshSc5Fz8"
+//#define PF_CLIENT_KEY @"seD1rhtS5UjYI6hsJWLORZ6aDhlyaDNnHoGivEXL"
+
+#define PF_APP_ID @"LlLxxipirAQ2m4zH21OZnAfeWv6mbGJMji3XjjvF"
+#define PF_CLIENT_KEY @"3i8UeliXYAeOpghU8Zr9313n9SMieGjE0jzRD7H5"
 
 #define TW_CONSUMER_KEY @"obowSmqbwl11dS09Iuc1Dw"
 #define TW_CONSUMER_SECRET @"tVlfTk1FzlRN7zAAn9DYNd8mSImxWBCJctLRXBNN0U"
@@ -33,7 +36,6 @@
     PFACL *defaultACL = [PFACL ACL];
     [defaultACL setPublicReadAccess:YES];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-    
     
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     return YES;
