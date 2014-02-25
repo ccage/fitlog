@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01A198A218BD12A4009CC402 /* fitlogIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A198A118BD12A4009CC402 /* fitlogIntegrationTests.m */; };
 		B61054AB18B31D51003AC9E2 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B61054AA18B31D51003AC9E2 /* Parse.framework */; };
 		B61054AC18B31D51003AC9E2 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B61054AA18B31D51003AC9E2 /* Parse.framework */; };
 		B61054AF18B31E2B003AC9E2 /* FLUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B61054AE18B31E2B003AC9E2 /* FLUser.m */; };
@@ -94,6 +95,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01A198A118BD12A4009CC402 /* fitlogIntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fitlogIntegrationTests.m; sourceTree = "<group>"; };
 		B61054AA18B31D51003AC9E2 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		B61054AD18B31E2B003AC9E2 /* FLUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLUser.h; sourceTree = "<group>"; };
 		B61054AE18B31E2B003AC9E2 /* FLUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLUser.m; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		B6117DDD18A2A7C30004826A /* fitlogTests */ = {
 			isa = PBXGroup;
 			children = (
+				01A198A118BD12A4009CC402 /* fitlogIntegrationTests.m */,
 				B65FCCB218B95E6E00C9FF7F /* FLActivityTypeTests.m */,
 				B6117DE318A2A7C30004826A /* fitlogTests.m */,
 				B6117DDE18A2A7C30004826A /* Supporting Files */,
@@ -560,6 +563,7 @@
 				B65FCCAA18B95A8300C9FF7F /* FLActivityItemCell.m in Sources */,
 				B65FCCAB18B95A8300C9FF7F /* FLActivityManager.m in Sources */,
 				B65FCCAC18B95A8300C9FF7F /* ActivityViewController.m in Sources */,
+				01A198A218BD12A4009CC402 /* fitlogIntegrationTests.m in Sources */,
 				B65FCCAD18B95A8300C9FF7F /* ActivityLogViewController.m in Sources */,
 				B65FCCAE18B95A8300C9FF7F /* SettingsViewController.m in Sources */,
 				B65FCCB318B95E6E00C9FF7F /* FLActivityTypeTests.m in Sources */,
