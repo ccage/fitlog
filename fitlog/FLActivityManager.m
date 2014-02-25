@@ -39,41 +39,11 @@
     return self;
 }
 
-//- (BOOL)isFavoriteAtIndexPath:(NSIndexPath *) indexPath {
-//    BOOL result = NO;
-//    FLActivityType *atype = [self.activityTypes objectAtIndex:indexPath.row];
-//    
-//    result = [self.favoriteActivityTypes containsObject:atype];
-//    if (result) {
-////        NSLog(@"Found %@ as a favorite!", atype);
-//        NSLog(@"is a fav");
-//    } else {
-//        NSLog(@"not a fav");
-//    }
-//    return result;
-//}
-//
-//
-//- (NSString *)nameAtIndexPath:(NSIndexPath *) indexPath {
-//    FLActivityType *atype = [self.activityTypes objectAtIndex:indexPath.row];
-//    return atype.name;
-//}
-//
-//
-//- (NSString *)idAtIndexPath:(NSIndexPath *) indexPath {
-//    FLActivityType *atype = [self.activityTypes objectAtIndex:indexPath.row];
-//    return atype.objectId;
-//}
-//
-//- (NSNumber *)itemCount {
-//    return [NSNumber numberWithInteger:[self.activityTypes count]];
-//}
-
 - (BOOL)isFavoriteActivity:(FLActivityType *)activity within:(NSArray *)favorites {
     BOOL result = NO;
     
     for (FLActivityType *anActivity in favorites) {
-        if ([anActivity.objectId isEqualToString:activity.objectId]) {
+        if ([anActivity isEqualToActivity:activity]) {
             result = YES;
             break;
         }
@@ -114,7 +84,10 @@
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
         PFRelation *relation = [user relationForKey:FL_FAV_RELATION];
-        [[relation query] findObjectsInBackgroundWithBlock:^(NSArray *favorites, NSError *error) {
+        PFQuery *query = [relation query];
+        [self cachePolicyForQuery:query];
+        //[[relation query] findObjectsInBackgroundWithBlock:^(NSArray *favorites, NSError *error) {
+        [query findObjectsInBackgroundWithBlock:^(NSArray *favorites, NSError *error) {
             if (!error) {
                 [subscriber sendNext:favorites];
             } else {
@@ -158,32 +131,31 @@
     }];
 }
 
-//- (RACSignal *)removeFavoriteActivity:(FLActivityType *)activity forUser:(PFUser *)user {
-//    
-//    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-//        NSLog(@"attempt to remove object for user...");
-//        
-//        
-//        PFQuery *query = [PFQuery queryWithClassName:FL_FAVORITE];
-//        [query whereKey:@"activityType" equalTo:activity];
-//        [query whereKey:@"user" equalTo:user];
-//        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//            if (!error) {
-//                // The find succeeded.
-//                NSLog(@"Successfully retrieved %d scores.", objects.count);
-//                // Do something with the found objects
-//                for (PFObject *object in objects) {
-//                    NSLog(@"%@", object.objectId);
-//                }
-//            } else {
-//                // Log details of the failure
-//                NSLog(@"Error: %@ %@", error, [error userInfo]);
-//            }
-//        }];
-//        
-//        
-//    }];
-//}
+- (RACSignal *)removeFavoriteActivity:(FLActivityType *)activity forUser:(PFUser *)user {
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSLog(@"attempt to remove object for user...");
+        
+        //Check out: https://www.parse.com/questions/pfrelation-removeobject-deletes-actual-object-not-relationship
+        //remove object from relation
+        // And then save data via relation again???
+        PFRelation *relation = [[PFUser currentUser] relationForKey:FL_FAV_RELATION];
+        [relation removeObject:activity];
+        [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                [subscriber sendCompleted];
+            } else {
+                [subscriber sendError:error];
+            }
+        }];
+
+        return [RACDisposable disposableWithBlock:^{
+            NSLog(@"nothign to dispose of...");
+        }];
+        
+        
+    }];
+}
 
 #pragma mark - Helper Methods...
 
@@ -230,7 +202,7 @@
 
 
 - (void)cachePolicyForQuery:(PFQuery *)aQuery {
-    aQuery.cachePolicy = kPFCachePolicyCacheElseNetwork;
+    aQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     aQuery.maxCacheAge = 60 * 60 * 24; //one day
 }
 
