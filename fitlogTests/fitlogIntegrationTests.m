@@ -50,6 +50,34 @@
     [super tearDown];
 }
 
+- (void)testCreateBaseActivities
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"ActivityType"];
+    [query whereKey:@"isActive" equalTo:@YES];
+    NSArray *ret = [query findObjects];
+    
+    NSArray * baseActivities = @[@"Cycling", @"Yoga", @"Running", @"Boxing", @"CrossFit", @"Climbing"];
+    
+    int myint = [ret count];
+    if (myint == 0)
+    {
+        for(NSString * activityName in baseActivities)
+        {
+            FLActivityType *newActivity = [[FLActivityType alloc] init];
+            
+            newActivity.name = activityName;
+            newActivity.isActive = YES;
+            
+            [newActivity save];
+        }
+    }
+    
+    ret = [query findObjects];
+    
+    XCTAssertEqual([ret count], [baseActivities count]);
+}
+
+
 - (void)testExample
 {
     PFQuery *query = [PFQuery queryWithClassName:@"ActivityType"];

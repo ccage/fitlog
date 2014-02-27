@@ -11,6 +11,8 @@
 
 @implementation FLActivityType
 @dynamic name;
+@dynamic isActive;
+
 //@dynamic objectId;
 
 + (NSString *)parseClassName {

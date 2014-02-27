@@ -12,6 +12,8 @@
 +(NSString *)parseClassName;
 
 @property (retain) NSString *name;
+@property BOOL isActive;
+
 //@property (retain) NSString *objectId;
 - (BOOL)isEqualToActivity:(FLActivityType *)activity;
 
