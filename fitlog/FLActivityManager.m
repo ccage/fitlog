@@ -8,6 +8,7 @@
 
 #import "FLActivityManager.h"
 #import "FLActivityType.h"
+#import "FLActivity.h"
 
 @interface FLActivityManager()
 @property (strong, nonatomic, readwrite) NSArray *activityTypes;
@@ -51,6 +52,16 @@
     return result;
 }
 
+- (FLActivityType *)findActivityTypeFromActivities:(NSArray *)activities byName:(NSString *)name {
+    FLActivityType *result = nil;
+    for (FLActivityType *activityType in activities) {
+        if ([activityType.name isEqualToString:name]) {
+            result = activityType;
+            break;
+        }
+    }
+    return result;
+}
 
 #pragma mark - Data Requests...
 
@@ -93,6 +104,7 @@
             } else {
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
                 [subscriber sendError:error];
+//                kPFErrorCacheMiss
             }
             
         }];
@@ -150,10 +162,38 @@
         }];
 
         return [RACDisposable disposableWithBlock:^{
-            NSLog(@"nothign to dispose of...");
+            NSLog(@"nothing to dispose of...");
         }];
         
         
+    }];
+}
+
+- (RACSignal *)saveActivity:(FLActivity *)activity forUser:(PFUser *)user {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        
+        NSLog(@"activity: %@", activity);
+        //could move this behind an api...
+        PFObject *pfActivity = [PFObject objectWithClassName:@"Activity"];
+        pfActivity[@"name"] = activity.name;
+        pfActivity[@"comment"] = activity.comment;
+        pfActivity[@"repeats"] = [NSNumber numberWithInteger:activity.repeats];
+        pfActivity[@"completionDate"] = activity.completionDate;
+        pfActivity[@"duration"] = [NSNumber numberWithFloat:activity.duration];
+        pfActivity[@"activityType"] = [PFObject objectWithoutDataWithClassName:@"ActivityType" objectId:activity.activityTypeId];
+        
+        [pfActivity saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                [subscriber sendCompleted];
+            } else {
+                [subscriber sendError:error];
+            }
+        }];
+//        [subscriber sendCompleted];
+        
+        return [RACDisposable disposableWithBlock:^{
+            NSLog(@"nothing to dispose of");
+        }];
     }];
 }
 
@@ -202,7 +242,14 @@
 
 
 - (void)cachePolicyForQuery:(PFQuery *)aQuery {
-    aQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    if ([aQuery hasCachedResult]) {
+        aQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        NSLog(@"pull from cache first");
+    } else {
+        aQuery.cachePolicy = kPFCachePolicyNetworkOnly;
+        NSLog(@"no cache - pull from network");
+    }
+    
     aQuery.maxCacheAge = 60 * 60 * 24; //one day
 }
 

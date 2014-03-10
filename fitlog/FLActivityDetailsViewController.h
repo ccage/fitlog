@@ -7,19 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+@class FLActivityType;
+@class FLActivity;
 
-@interface FLActivityDetailsViewController : UIViewController <UITextViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *activityNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *activityDescriptionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *activityCompletionDateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *sessionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *sessionDurationLabel;
-@property (weak, nonatomic) IBOutlet UITextView *activityCommentsTextView;
-@property (weak, nonatomic) IBOutlet UIView *commentsView;
+@interface FLActivityDetailsViewController : UITableViewController <UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *completionDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UIDatePicker *completionDatePicker;
+@property (weak, nonatomic) IBOutlet UIPickerView *durationPicker;
+@property (weak, nonatomic) IBOutlet UILabel *repeatsLabel;
+@property (weak, nonatomic) IBOutlet UITextView *commentTextView;
+@property (weak, nonatomic) IBOutlet UITextField *repeatsTextField;
+@property (nonatomic, strong) FLActivity *activity;
 
+- (IBAction)completionDateChanged:(id)sender;
 - (IBAction)saveHandler:(id)sender;
-- (IBAction)backgroundTap:(id)sender;
+- (IBAction)displayActivityDescription:(id)sender;
+- (IBAction)closeHandler:(id)sender;
 
 
 @end

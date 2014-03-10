@@ -302,8 +302,11 @@
 		B6117DDD18A2A7C30004826A /* fitlogTests */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				01A198A118BD12A4009CC402 /* fitlogIntegrationTests.m */,
+=======
 				B69924EC18C51D0900BCD8A1 /* FLUtilityTests.m */,
+>>>>>>> e994c22e8c3019bd091f7807ac139bd8fb7c51ec
 				B65FCCB218B95E6E00C9FF7F /* FLActivityTypeTests.m */,
 				B6117DE318A2A7C30004826A /* fitlogTests.m */,
 				B6117DDE18A2A7C30004826A /* Supporting Files */,
